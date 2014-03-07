@@ -530,7 +530,7 @@ Fulcrum.StoryView = Fulcrum.FormView.extend({
 
   makeIdDiv: function(model) {
     if(model.id){
-        return "<br><div>Story ID: "+model.id+"</div><br>";
+        return "<br><div class='story_id'>Story ID: "+model.id+"</div><br>";
     }
   }
 });

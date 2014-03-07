@@ -459,6 +459,21 @@ describe('Fulcrum.StoryView', function() {
 
   });
 
+  describe("story id", function(){
+      beforeEach(function() {
+          this.view.model.set({editing: true});
+      });
+
+      afterEach(function() {
+          this.view.model.set({editing: false});
+      });
+      it("should show the story id", function(){
+        expect(this.view.$('.story_id').length).toEqual(1);
+        expect(this.view.$('.story_id').text()).toBe("Story ID: "+this.view.model.id);
+      });
+
+  });
+
   describe("description", function() {
 
     beforeEach(function() {
