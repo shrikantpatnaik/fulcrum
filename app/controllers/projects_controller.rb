@@ -61,11 +61,16 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     @project = current_user.projects.find(params[:id])
+    if params[:project][:new_api_token]
+      params.delete(:project)
+      params[:project] = {:api_token => SecureRandom.hex}
+    end
 
     respond_to do |format|
       if @project.update_attributes(allowed_params)
         format.html { redirect_to(@project, :notice => t('projects.project was successfully updated')) }
         format.xml  { head :ok }
+        format.json { render :json => @project }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @project.errors, :status => :unprocessable_entity }
@@ -88,7 +93,7 @@ class ProjectsController < ApplicationController
   protected
 
   def allowed_params
-    params.fetch(:project,{}).permit(:name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length)
+    params.fetch(:project,{}).permit(:name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length, :api_token)
   end
 
 end
