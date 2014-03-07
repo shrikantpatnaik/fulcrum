@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-
+  ROLES = %w[admin moderator author banned]
   # FIXME - DRY up, repeated in Story model
   JSON_ATTRIBUTES = ["id", "name", "initials", "email"]
 
@@ -49,5 +49,19 @@ class User < ActiveRecord::Base
 
   def as_json(options = {})
     super(:only => JSON_ATTRIBUTES)
+  end
+
+  def roles=(roles)
+    self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.inject(0, :+)
+  end
+
+  def roles
+    ROLES.reject do |r|
+      ((roles_mask.to_i || 0) & 2**ROLES.index(r)).zero?
+    end
+  end
+
+  def is?(role)
+    roles.include?(role.to_s)
   end
 end

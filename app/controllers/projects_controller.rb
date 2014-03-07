@@ -3,7 +3,11 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = current_user.projects
+    if current_user.is? :admin
+      @projects = Project.all
+    else
+      @projects = current_user.projects
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @projects }
@@ -13,7 +17,11 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = current_user.projects.find(params[:id])
+    if current_user.is? :admin
+      @project = Project.find(params[:id])
+    else
+      @project = current_user.projects.find(params[:id])
+    end
     @story = @project.stories.build
 
     respond_to do |format|
@@ -43,6 +51,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.xml
   def create
+    authorize! :manage, @project
     @project = current_user.projects.build(allowed_params)
     @project.users << current_user
 

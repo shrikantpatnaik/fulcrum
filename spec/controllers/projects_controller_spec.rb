@@ -54,8 +54,13 @@ describe ProjectsController do
 
         let(:project) { mock_model(Project) }
         let(:users)   { double("users") }
+        let(:user)      { FactoryGirl.create :user, :roles_mask => 1 }
 
         before do
+          sign_in user
+          subject.stub(:current_user => user)
+          user.stub(:projects => projects)
+
           projects.stub(:build).with({}) { project }
           project.stub(:users => users)
           users.should_receive(:<<).with(user)

@@ -17,6 +17,7 @@ gem 'configuration'
 gem 'rails-observers', '~> 0.1.2'
 # gem 'protected_attributes'
 gem 'jquery-ui-rails'
+gem 'cancan'
 
 group :production do
   gem 'pg'
@@ -43,12 +44,12 @@ end
 if ENV['TRAVIS'] == 'true'
   group :test do
     case ENV['DB']
-    when'mysql'
-      gem 'mysql2'
-    when 'postgresql'
-      gem 'pg'
-    else
-      gem 'sqlite3'
+      when'mysql'
+        gem 'mysql2'
+      when 'postgresql'
+        gem 'pg'
+      else
+        gem 'sqlite3'
     end
   end
 end

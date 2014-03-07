@@ -31,10 +31,12 @@ Fulcrum::Application.routes.draw do
     end
   end
 
-  devise_for :users, :controllers => { 
-      :confirmations => "confirmations", 
+  devise_for :users, :controllers => {
+      :confirmations => "confirmations",
       :registrations => "registrations"
-    }
+  }
+
+  resources :users, :only => [:index, :update, :destroy]
 
   if Rails.env.development?
     get 'testcard' => 'static#testcard'

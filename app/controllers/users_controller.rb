@@ -3,8 +3,13 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   def index
-    @project = current_user.projects.find(params[:project_id])
-    @users = @project.users
+    if params[:project_id]
+      @project = current_user.projects.find(params[:project_id])
+      @users = @project.users
+    else
+      authorize! :manage, User
+      @users = User.all
+    end
     @user = User.new
     respond_with(@users)
   end
@@ -36,6 +41,22 @@ class UsersController < ApplicationController
     end
 
     redirect_to project_users_url(@project)
+  end
+
+  def update
+    authorize! :manage, User
+    user = User.find params[:id]
+    if params[:make_admin]
+      user.roles = ["admin"]
+      user.save
+    elsif params[:remove_admin]
+      old_roles = user.roles
+      old_roles.delete("admin")
+      user.roles = old_roles
+      user.save
+    end
+
+    redirect_to users_path
   end
 
   def destroy

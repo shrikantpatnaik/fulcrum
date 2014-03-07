@@ -19,7 +19,7 @@ describe UsersController do
     end
   end
 
-  context "when logged in" do
+  context "when user logged in as user" do
 
     let(:user)  { FactoryGirl.create(:user) }
     let(:projects)  { double("projects") }
@@ -172,5 +172,67 @@ describe UsersController do
 
     end
 
+  end
+
+  context "when user logged in as admin" do
+
+    let(:user)  { FactoryGirl.create(:user, :roles_mask => 1) }
+    let(:user1) { FactoryGirl.create(:user) }
+    let(:users) { [user, user1] }
+
+    before do
+      sign_in user
+      subject.stub(:current_user => user)
+    end
+
+    describe "collection actions" do
+
+      describe "#index" do
+
+        context "as html" do
+          specify do
+            get :index
+            response.should be_success
+            assigns[:users].should == User.all
+          end
+        end
+
+        context "as json" do
+          specify do
+            xhr :get, :index, :format => :json
+            response.should be_success
+            response.body.should == User.all.to_json
+          end
+
+        end
+
+      end
+    end
+
+    describe "member actions" do
+      describe "#update" do
+        context "making admin" do
+          specify do
+            put :update, :id => user1.id, :make_admin => true
+            response.should redirect_to(users_url)
+            user1.reload
+            user1.is?(:admin).should be_true
+          end
+        end
+
+        context "remove admin" do
+          before do
+            user1.roles = ["admin"]
+            user1.save
+          end
+          specify do
+            put :update, :id => user1.id, :remove_admin => true
+            response.should redirect_to(users_url)
+            user1.reload
+            user1.is?(:admin).should be_false
+          end
+        end
+      end
+    end
   end
 end
