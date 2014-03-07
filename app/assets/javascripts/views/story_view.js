@@ -284,6 +284,8 @@ Fulcrum.StoryView = Fulcrum.FormView.extend({
         })
       );
 
+      this.$el.append(this.makeIdDiv(this.model));
+
       this.$el.append(
         this.makeFormControl({
           name: "estimate",
@@ -524,5 +526,11 @@ Fulcrum.StoryView = Fulcrum.FormView.extend({
       $div.append(content.control);
     }
     return div;
+  },
+
+  makeIdDiv: function(model) {
+    if(model.id){
+        return "<br><div>Story ID: "+model.id+"</div><br>";
+    }
   }
 });
