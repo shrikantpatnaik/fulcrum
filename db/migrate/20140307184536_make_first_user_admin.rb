@@ -1,13 +1,17 @@
 class MakeFirstUserAdmin < ActiveRecord::Migration
   def self.up
     u = User.first
-    u.roles = ["admin"]
-    u.save
+    if u
+      u.roles = ["admin"]
+      u.save
+    end
   end
 
   def self.down
     u = User.first
-    u.roles = []
-    u.save
+    if u
+      u.roles = []
+      u.save
+    end
   end
 end
