@@ -7,7 +7,6 @@ class API::V1::ProjectsController < ApplicationController
     unless @project.nil?
       params["commits"].each do |commit|
         fixed_stories_in_commit = commit["message"].scan(/fixes fulcrum #\d+/)
-        #    #delivered = commit["message"].scan(/delivers fulcrum #\d+/)
         fixed_stories_in_commit.each do |fixed_story|
           story = @project.stories.find(fixed_story.sub!("fixes fulcrum #", ""))
           if story.state.eql?"started"
@@ -21,7 +20,6 @@ class API::V1::ProjectsController < ApplicationController
             end
           else no_update_response
           end
-
         end
       end
     else
