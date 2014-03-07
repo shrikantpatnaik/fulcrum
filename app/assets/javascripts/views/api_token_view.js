@@ -2,7 +2,7 @@ if (typeof Fulcrum == 'undefined') {
     Fulcrum = {};
 }
 
-Fulcrum.ApiTokenView = Backbone.View.extend({
+Fulcrum.APITokenView = Backbone.View.extend({
 
     template: JST['templates/api_token'],
     events: {

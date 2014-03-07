@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
     var project = new Fulcrum.Project(<%= @project.to_json.html_safe %>);
-    window.apiTokenView = new Fulcrum.ApiTokenView({
+    window.apiTokenView = new Fulcrum.APITokenView({
         model: project, el: $('#api-token')
     }).render();
 </script>
