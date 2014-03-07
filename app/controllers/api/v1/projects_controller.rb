@@ -2,7 +2,7 @@ class API::V1::ProjectsController < ApplicationController
   skip_before_filter :authenticate_user!
   skip_before_filter :verify_authenticity_token
   respond_to :json
-  def update
+  def create
     @project = Project.where({:id => params[:id], :api_token => params[:token]}).first
     unless @project.nil?
       params["commits"].each do |commit|
