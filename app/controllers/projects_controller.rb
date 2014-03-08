@@ -45,13 +45,14 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = current_user.projects.find(params[:id])
+    authorize! :manage, @project
     @project.users.build
   end
 
   # POST /projects
   # POST /projects.xml
   def create
-    authorize! :manage, @project
+    authorize! :manage, Project
     @project = current_user.projects.build(allowed_params)
     @project.users << current_user
 
@@ -70,19 +71,28 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     @project = current_user.projects.find(params[:id])
-    if params[:project][:new_api_token]
-      params.delete(:project)
-      params[:project] = {:api_token => SecureRandom.hex}
-    end
-
-    respond_to do |format|
-      if @project.update_attributes(allowed_params)
-        format.html { redirect_to(@project, :notice => t('projects.project was successfully updated')) }
-        format.xml  { head :ok }
-        format.json { render :json => @project }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @project.errors, :status => :unprocessable_entity }
+    @project = Project.find(params[:id]) if (can? :manage, User) && @project.nil?
+    if params[:user_id]
+      if params[:make_admin]
+        @project.admins << User.find(params[:user_id])
+      elsif params[:remove_admin]
+        @project.admins.delete(User.find(params[:user_id]))
+      end
+      redirect_to project_users_url(@project)
+    else
+      if params[:project] && params[:project][:new_api_token]
+        params.delete(:project)
+        params[:project] = {:api_token => SecureRandom.hex}
+      end
+      respond_to do |format|
+        if @project.update_attributes(allowed_params)
+          format.html { redirect_to(@project, :notice => t('projects.project was successfully updated')) }
+          format.xml  { head :ok }
+          format.json { render :json => @project }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @project.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end
@@ -91,6 +101,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     @project = current_user.projects.find(params[:id])
+    authorize! :manage, @project
     @project.destroy
 
     respond_to do |format|

@@ -12,7 +12,20 @@
           <%= user %><%= link_to 'Remove', project_user_path(@project, user),
                                  :data => { :confirm => "Are you sure you want to remove #{user.email} from this project?" },
                                  :method => :delete if @project %>
+          <% if ((can? :manage, User) || @project.admins.include?(user)) && @project %>
+            &nbsp;&nbsp;
+            <% if @project.admins && @project.admins.include?(user) %>
+              <%= link_to 'Remove as Project Admin', project_path(@project.id, :remove_admin => true, :user_id => user.id),
+                          :data => { :confirm => "Are you sure you want to remove #{user.email} as a Project admin" },
+                          :method => :put %>
+            <% else %>
+              <%= link_to 'Make Project Admin', project_path(@project.id, :make_admin => true, :user_id => user.id),
+                          :data => { :confirm => "Are you sure you want to make #{user.email} a Project admin" },
+                          :method => :put %>
+            <% end %>
+          <% end %>
           <% if (can? :manage, User) && !@project %>
+            &nbsp;&nbsp;
             <% if user.is? :admin %>
               <%= link_to 'Remove Admin', user_path(user.id, :remove_admin => true),
                           :data => { :confirm => "Are you sure you want to remove #{user.email} as admin?" },

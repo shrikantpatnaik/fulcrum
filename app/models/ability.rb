@@ -31,6 +31,10 @@ class Ability
     user ||= User.new
     if user.is? :admin
       can :manage, :all
+    else
+      can :manage, Project do |project|
+        project.admins.include?user
+      end
     end
   end
 end

@@ -141,7 +141,7 @@ describe ProjectsController do
         let(:users) { double("users") }
 
         before do
-          project.stub(:users => users)
+          project.stub(:users => users, :admins => [user])
           users.should_receive(:build)
         end
 
@@ -192,6 +192,7 @@ describe ProjectsController do
       describe "#destroy" do
 
         before do
+          project.stub(:admins => [user])
           project.should_receive(:destroy)
         end
 

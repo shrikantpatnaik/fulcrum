@@ -30,7 +30,7 @@ describe UsersController do
       subject.stub(:current_user => user)
       user.stub(:projects => projects)
       projects.stub(:find).with(project.id.to_s) { project }
-      project.stub(:users => users)
+      project.stub(:users => users, :admins => [user])
     end
 
     describe "collection actions" do

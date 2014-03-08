@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   def index
     if params[:project_id]
       @project = current_user.projects.find(params[:project_id])
+      authorize! :manage, @project
       @users = @project.users
     else
       authorize! :manage, User
