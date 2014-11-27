@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 ruby '2.1.2'
 
 gem 'rails', '~> 4.1.4'
+gem 'cancancan', '~> 1.9'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 2.5.3'
 gem 'coffee-rails', '~> 4.0.1'
@@ -16,7 +17,6 @@ gem 'rails-i18n'
 gem 'configuration'
 gem 'rails-observers', '~> 0.1.2'
 gem 'jquery-ui-rails'
-gem 'cancan'
 
 group :production do
   gem 'pg'
