@@ -1,21 +1,20 @@
 source 'http://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.1.2'
 
-gem 'rails', '4.0.2'
-gem 'sass-rails', '~> 4.0.1'
-gem 'uglifier', '>= 1.3.0'
+gem 'rails', '~> 4.1.4'
+gem 'sass-rails', '~> 4.0.3'
+gem 'uglifier', '>= 2.5.3'
 gem 'coffee-rails', '~> 4.0.1'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 1.2'
 gem 'ejs'
-gem "compass-rails", "~> 1.1.2"
-gem "devise", "~> 3.2.0"
+gem "compass-rails", '~> 2.0.0'
+gem "devise", "~> 3.2.4"
 gem 'transitions', '0.1.9', :require => ["transitions", "active_record/transitions"]
 gem 'rails-i18n'
 gem 'configuration'
 gem 'rails-observers', '~> 0.1.2'
-# gem 'protected_attributes'
 gem 'jquery-ui-rails'
 gem 'cancan'
 
@@ -27,14 +26,20 @@ group :production do
   gem 'rails_12factor'
 end
 
+group :development do
+  gem 'letter_opener'
+end
+
 group :development, :test do
+  gem 'pry'
   gem 'sqlite3'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.99.0'
   gem 'factory_girl_rails'
   gem 'jasmine', '~> 1.3.2'
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'database_cleaner'
+  gem 'quiet_assets'
 end
 
 group :travis do
