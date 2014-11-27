@@ -6,7 +6,7 @@ system for agile development teams.  See
 [the project page](http://wholemeal.co.nz/projects/fulcrum.html) for more
 details.
 
-[![Build Status](https://travis-ci.org/fulcrum-agile/fulcrum.png?branch=master)](https://travis-ci.org/fulcrum-agile/fulcrum)
+[ ![Codeship Status for shrikantpatnaik/fulcrum](https://codeship.com/projects/204b7f40-daaf-0131-3cc0-5e5b8757ce5e/status)](https://codeship.com/projects/24353)
 
 
 
@@ -165,7 +165,7 @@ Here are some general guidelines for contributing:
 * All patches changes be covered by tests, and should not break the existing
   tests, unless a current test is invalidated by a code change.  This includes
   Javascript, which is covered with a Jasmine test suite in `spec/javascripts/`.
-* Run `rake spec` to check the Rails test suite is green. You will need 
+* Run `rake spec` to check the Rails test suite is green. You will need
   Firefox with Selenium installed to run the integration tests.
 * To run the Javascript test suite, run `rake jasmine` and point your browser
   to `http://localhost:8888/`
