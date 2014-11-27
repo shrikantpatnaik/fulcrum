@@ -87,7 +87,7 @@ describe UsersController do
             post :create, :project_id => project.id, :user => user_params
             user.name.should == user_params["name"]
             user.initials.should == user_params["initials"]
-            user.was_created.should be_true
+            user.was_created.should be_truthy
             response.should redirect_to(project_users_url(project))
           end
 
@@ -114,7 +114,7 @@ describe UsersController do
 
           specify do
             post :create, :project_id => project.id, :user => user_params
-            user.was_created.should be_false
+            user.was_created.should be_falsey
           end
         end
 
@@ -216,7 +216,7 @@ describe UsersController do
             put :update, :id => user1.id, :make_admin => true
             response.should redirect_to(users_url)
             user1.reload
-            user1.is?(:admin).should be_true
+            user1.is?(:admin).should be_truthy
           end
         end
 
@@ -229,7 +229,7 @@ describe UsersController do
             put :update, :id => user1.id, :remove_admin => true
             response.should redirect_to(users_url)
             user1.reload
-            user1.is?(:admin).should be_false
+            user1.is?(:admin).should be_falsey
           end
         end
       end

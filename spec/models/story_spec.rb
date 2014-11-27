@@ -76,7 +76,7 @@ describe Story do
   end
 
   describe "#estimated?" do
-    
+
     context "when estimate is nil" do
       before { subject.estimate = nil }
       it { should_not be_estimated }
@@ -133,7 +133,7 @@ describe Story do
       before { subject.position = 42 }
 
       it "does nothing" do
-        subject.set_position_to_last.should be_true
+        subject.set_position_to_last.should be_truthy
         subject.position = 42
       end
     end
@@ -187,7 +187,7 @@ describe Story do
       end
 
       it "is unset when state changes from 'accepted'" do
-        subject.accepted_at = Date.parse('1999/01/01') 
+        subject.accepted_at = Date.parse('1999/01/01')
         subject.update_attribute :state, 'accepted'
         subject.update_attribute :state, 'started'
         subject.accepted_at.should be_nil

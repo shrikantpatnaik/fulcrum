@@ -40,6 +40,9 @@ group :development, :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'quiet_assets'
+  gem "rspec-its"
+  gem "rspec-collection_matchers"
+  gem "rspec-activemodel-mocks"
 end
 
 group :travis do
