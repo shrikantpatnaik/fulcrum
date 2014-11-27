@@ -9,3 +9,6 @@ tmp/
 *.DS_Store
 config/deploy.rb
 *.swp
+*.iml
+/.idea
+
