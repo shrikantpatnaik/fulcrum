@@ -22,8 +22,7 @@ describe "Projects" do
         visit projects_path
 
         page.should have_selector('h1', :text => 'Listing Projects')
-
-        click_on 'Test Project'
+        find('a', :text => 'Test Project').click
 
         page.should have_selector('h1', :text => 'Test Project')
       end
