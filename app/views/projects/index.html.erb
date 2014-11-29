@@ -2,7 +2,7 @@
   <h1><%= t('.listing projects') %></h1>
 <% end %>
 <% if @projects.empty? %>
-  No Projects found. Please ask an admin or email me@shrikantpatnaik.com for support.
+  No Projects found. Please ask an admin or email <%= Fulcrum::Application.config.fulcrum.admin_email %> for support.
 <% else %>
   <ul id="projects">
       <% @projects.each do |project| %>

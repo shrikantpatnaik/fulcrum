@@ -66,6 +66,13 @@ Once you have these:
 You should then be able to navigate to `http://localhost:3000/` in a web browser.
 You can log in with the test username `test@example.com`, password `testpass`.
 
+Config Variables
+----------------
+
+* `APP_HOST`: `<string>`: `The main url of the app(For links)`
+* `MAILER_SENDER`: `<string>`: `The email address from which to send emails`
+* `ADMIN_EMAIL`: `<string>`: `The admin email address`
+* `DISABLE_REGISTRATION`: `<boolean>`: `Prevent public registration`
 
 Heroku setup
 ------------
