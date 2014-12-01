@@ -11,6 +11,11 @@ Configuration.for('fulcrum') do
   # Admin Email
   admin_email ENV['ADMIN_EMAIL'] || 'admin@example.com'
 
+  # Slack Notifications
+  slack_notifications ENV['SLACK_NOTIFICATIONS'] || false
+  slack_webhook_url ENV['SLACK_WEBHOOK_URL'] || ''
+
+
   # Project column order:
   # progress_to_right: chilly bin, backlog, in progress, done
   # progress_to_left: done, in progress, backlog, chilly bin

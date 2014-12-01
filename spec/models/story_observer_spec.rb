@@ -17,7 +17,7 @@ describe StoryObserver do
       # Should always create a changeset
       story.changesets.should_receive(:create!)
     end
-    
+
     context "when story state changed" do
 
       let(:project) { mock_model(Project) }
@@ -49,35 +49,104 @@ describe StoryObserver do
         let(:owned_by)      { mock_model(User, :email_acceptance? => true,
                                                :email_rejection? => true) }
         let(:notifier)      { double("notifier") }
-
         before do
           story.stub(:acting_user => acting_user)
           story.stub(:requested_by => requested_by)
           story.stub(:owned_by => owned_by)
           project.stub(:start_date => true)
-          notifier.should_receive(:deliver)
         end
+        describe "email" do
+          before do
+            notifier.should_receive(:deliver)
+          end
+          it "sends 'delivered' notification" do
+            story.stub(:state => 'delivered')
+            Notifications.should_receive(:delivered).with(story, acting_user) {
+              notifier
+            }
+            subject.after_save(story)
+          end
+          it "sends 'accepted' notification" do
+            story.stub(:state => 'accepted')
+            Notifications.should_receive(:accepted).with(story, acting_user) {
+              notifier
+            }
+            subject.after_save(story)
+          end
+          it "sends 'rejected' notification" do
+            story.stub(:state => 'rejected')
+            Notifications.should_receive(:rejected).with(story, acting_user) {
+              notifier
+            }
+            subject.after_save(story)
+          end
+        end
+        describe "slack" do
+          before do
+            Configuration.for('fulcrum') do
+              slack_notifications true
+            end
+            HTTPClient.any_instance.stub(:post).and_return(true)
+            ActionMailer::Base.any_instance.stub(:mail)
+            double("Notifications").as_null_object
+          end
 
-        it "sends 'delivered' email notification" do
-          story.stub(:state => 'delivered')
-          Notifications.should_receive(:delivered).with(story, acting_user) {
-            notifier
-          }
-          subject.after_save(story)
-        end
-        it "sends 'accepted' email notification" do
-          story.stub(:state => 'accepted')
-          Notifications.should_receive(:accepted).with(story, acting_user) {
-            notifier
-          }
-          subject.after_save(story)
-        end
-        it "sends 'rejected' email notification" do
-          story.stub(:state => 'rejected')
-          Notifications.should_receive(:rejected).with(story, acting_user) {
-            notifier
-          }
-          subject.after_save(story)
+          after do
+            Configuration.for('fulcrum') do
+              slack_notifications false
+            end
+          end
+          it "sends 'delivered' notification" do
+            story.stub(:state => 'delivered')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} delivered this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
+          it "sends 'started' notification" do
+            story.stub(:state => 'started')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} started this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
+          it "sends 'finished' notification" do
+            story.stub(:state => 'finished')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} finished this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
+          it "sends 'accepted' notification" do
+            story.stub(:state => 'accepted')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} accepted this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
+          it "sends 'rejected' notification" do
+            story.stub(:state => 'rejected')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} rejected this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
+
+          it "sends 'added' notification" do
+            story.stub(:state => 'unstarted')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} added this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
+
+          it "sends 'added' notification" do
+            story.stub(:state => 'unscheduled')
+            SlackNotifier.should_receive(:notify).with("[#{story.project.name}] #{story.acting_user.name} added this #{story.story_type}: #{story.title}") {
+              notifier
+            }
+            subject.after_save(story)
+          end
         end
       end
 

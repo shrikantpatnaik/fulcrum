@@ -7,6 +7,14 @@ class StoryObserver < ActiveRecord::Observer
     if story.state_changed?
 
       unless story.project.suppress_notifications
+        if Fulcrum::Application.config.fulcrum.slack_notifications
+          if ['unstarted', 'unscheduled'].include?(story.state)
+            text = "[#{story.project.name}] #{story.requested_by.name} added this #{story.story_type}: #{story.title}"
+          else
+            text = "[#{story.project.name}] #{story.acting_user.name} #{story.state} this #{story.story_type}: #{story.title}"
+          end
+          SlackNotifier.notify(text)
+        end
 
         # Send a 'the story has been delivered' notification if the state has
         # changed to 'delivered'

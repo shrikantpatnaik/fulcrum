@@ -17,6 +17,7 @@ gem 'rails-i18n'
 gem 'configuration'
 gem 'rails-observers', '~> 0.1.2'
 gem 'jquery-ui-rails'
+gem 'httpclient'
 
 group :production do
   gem 'pg'
