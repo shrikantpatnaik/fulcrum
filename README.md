@@ -73,6 +73,8 @@ Config Variables
 * `MAILER_SENDER`: `<string>`: `The email address from which to send emails`
 * `ADMIN_EMAIL`: `<string>`: `The admin email address`
 * `DISABLE_REGISTRATION`: `<boolean>`: `Prevent public registration`
+* `SLACK_NOTIFICATONS`: `<boolean>`: `Enable Notifications on slack`
+* `SLACK_WEBHOOK_URL`: `<string>`: `Webhook URL for slack`
 
 Heroku setup
 ------------
